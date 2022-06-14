@@ -1,0 +1,947 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{txfonts}
+\usepackage[margin=0.25in]{geometry}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+\title{Algebra Lineare}
+\author{Scannagatti Gabriele}
+\newtheoremstyle{break}
+  {\topsep}{\topsep}%
+  {\itshape}{}%
+  {\bfseries}{}%
+  {\newline}{}%
+\theoremstyle{break}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corollario}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definizione}[subsection]
+\newtheorem{proposition}{Proposizione}[subsection]
+\newtheorem{example}{Esempio}[subsection]
+\newtheorem{exercise}{Esercizio}[subsection]
+\newtheorem{observation}{Osservazione}[subsection]
+\newcommand\R{{\rm I\!R}}
+\newcommand\CombSet[1]{\left< #1 \right>}
+\newcommand{\Vspace}{\text{uno spazio vettoriale reale }}
+\newcommand{\Dim}[1]{Dim_{\R}(#1)}
+\newcommand{\func}[3]{#1:#2\rightarrow #3}
+\newcommand{\Ltrans}{\text{una trasformazione lineare}}
+\newenvironment{vect}
+    {
+        \left[
+            \begin{matrix}
+                
+    }
+    { 
+            \end{matrix}
+        \right]
+    }
+
+\begin{document}
+    \maketitle
+    \newpage
+    \section{Definizioni Formali}
+    \begin{itemize}
+        \item \textbf{Equazione lineare:} un equazione lineare $\epsilon$ è una coppia ($(\alpha\times x)^n$,$\beta$)
+        dove la coppia $(\alpha_n\times x_n)^n$ è una tupla di lunghezza n formata da $\alpha\in\R$ coefficenti e da $x\in \R$ incognite, mentre $\beta\in \R $ è il termine noto.
+        \item L'insieme di tutte le equazioni lineari $\epsilon$ di n incognite è detto $E^n$.
+        \item Un sistema di equazioni lineare $(S)\subset E^n$ è un sottoinsieme di $E^n$. Graficamente è rappresentato come:
+            \[(S) 
+            \left\{ 
+                \begin{array}{lcr} 
+                   \alpha_{1,1}x_{1,1} + \alpha_{1,2}x_{1,2} + ... + \alpha_{1,n}x_{1,n} & = & \beta_1 \\ 
+                   \alpha_{2,1}x_{2,1} + \alpha_{2,2}x_{2,2} + ... + \alpha_{2,n}x_{2,n} & = & \beta_2 \\ 
+                   ... \\
+                   ... \\
+                   ... \\
+                   \alpha_{k,1}x_{k,1} + \alpha_{k,2}x_{k,2} + ... + \alpha_{k,n}x_{k,n} & = & \beta_k \\ 
+                \end{array}
+                \right. 
+            \]
+            dove $|(S)| = k$ ed è il numero di equazioni che compongono il sistema.
+        \item Un equazione $\epsilon\in E^n$ si dice omogenea quando: 
+        \[\beta = 0 = \sum_{i=1}^{n}\alpha_ix_i = 0\].
+        \item Se $\forall\epsilon\in(S).\beta_\epsilon = 0\Rightarrow (S)$ è un sistema omogeneo.
+        \item L'insieme delle soluzioni W di un sistema (S) è definito come:
+        \[W=\{\langle x_1,x_2,...x_n\rangle\in\R^n | \forall\epsilon\in(S).\space Soddisfatta(\epsilon)\}\]
+        In un sistema omogeneo $|W| = 1$ e $W = \{\langle 0_1, 0_2,...,0_n \rangle\}$.
+    \end{itemize}
+    \newpage
+    \section{Algoritmo di Gauss}
+    \textbf{Operazioni:}
+    \begin{enumerate}
+        \item $Swap: E^n\times E^n \rightarrow E^n\times E^n$ $Swap(\epsilon,\epsilon') = (\epsilon',\epsilon)$.
+        \item $Multiply: \R-\{0\}\times E^n\rightarrow E^n$ $Multiply(\varsigma, \epsilon)=\varsigma\epsilon$.
+        \item $Sum: E^n\times E^n \rightarrow E^n$ $Sum(\epsilon, \epsilon') = \epsilon + \epsilon'$ Nota $\epsilon\neq\epsilon'$.
+    \end{enumerate}
+    \textbf{Procedimento:}\newline
+    l'obiettivo è quello di ridurre nella forma di "Echelon Ridotta" utilizzando le operazioni definite in precedenza.
+    \begin{example}
+        \[(S) 
+        \left\{ 
+            \begin{array}{lcr} 
+                x_1 + 2x_2 - 3x_3 & = & 0 \\
+                2x_1 + 5x_2 -2x_3 & = & 0 \\
+                3x_1 - x_2 - 4x_3 & = & 0 \\
+            \end{array}
+            \right. 
+        \]
+        \[(S) \left[\frac{Sum(\epsilon_2,-2\epsilon_1)}{Sum(\epsilon_3,-3\epsilon_1)}\right]
+        \left\{ 
+            \begin{array}{lcr} 
+                x_1 + 2x_2 - 3x_3 & = & 0 \\
+                0 + x_2 + 8x_3 & = & 0 \\
+                0 - 7x_2 - 5x_3 & = & 0 \\
+            \end{array}
+            \right. 
+        \]
+        \[(S) \left[\frac{Sum(\epsilon_1,-2\epsilon_2)}{Sum(\epsilon_3,7\epsilon_2)}\right]
+        \left\{ 
+            \begin{array}{lcr} 
+                x_1 + 0 - 19x_3 & = & 0 \\
+                0 + x_2 + 8x_3 & = & 0 \\
+                0 + 0 - 61x_3 & = & 0 \\
+            \end{array}
+            \right. 
+        \]
+        \[(S) \left[Multiply(-\frac{1}{61},\epsilon_3)\right]
+        \left\{ 
+            \begin{array}{lcr} 
+                x_1 + 0 - 19x_3 & = & 0 \\
+                0 + x_2 + 8x_3 & = & 0 \\
+                0 + 0 + x_3 & = & 0 \\
+            \end{array}
+            \right. 
+        \]
+        \[(S) \left[\frac{Sum(\epsilon_1,-19\epsilon_3)}{Sum(\epsilon_2,-8\epsilon_3)}\right]
+        \left\{ 
+            \begin{array}{lcr} 
+                x_1 + 0 + 0 & = & 0 \\
+                0 + x_2 + 0 & = & 0 \\
+                0 + 0 + x_3 & = & 0 \\
+            \end{array}
+            \right. 
+        \]
+        \[W = \{\langle 0,0,0 \rangle\}\]
+    \end{example}
+    \begin{example}
+        \[(S)'
+        \left\{
+            \begin{array}{lcr}
+                x_1 + 2x_2 + 0 - 3x_4 & = & 1 \\
+                0 + 0 + x_3 + 11x_4 & = & 3 \\
+                0 + 0 + 0 + 0 & = & 0 \\
+            \end{array}
+        \right.
+        \]
+        \[W = \{\langle -2x_2+3x_4+1,x_2,-11x_4+3,x_4 \rangle\}\]
+        Raccolgo le variabili libere (le variabili non pivot)
+        \[W = \{ x_2\langle -2,1,0,0\rangle + x_4\langle 3,0,-11,1\rangle + \langle 1,0,3,0\rangle \}\]    
+    \end{example}
+    \newpage
+    \section{Matrici}
+    \subsection{Matrice Associata}
+    Dato un sistema di k equazioni $(S)\subset E^n$ la matrice associata ${\rm \!M(S)}$ è:
+    \[
+        \begin{bmatrix}
+            \alpha_{1,1} & \alpha_{1,2}  & \dots &  \alpha_{1,n} & -\beta_1 \\
+            \alpha_{2,1} & \alpha_{2,2} & \dots & \alpha_{2,n} & -\beta_2 \\
+            \dots & \dots & \dots & \dots & \dots \\
+            \dots & \dots & \dots & \dots & \dots \\
+            \alpha_{k,1} & \alpha_{k,2} & \dots & \alpha_{k,n} & -\beta_k
+        \end{bmatrix}
+    \]
+    composta da k righe e n + 1 colonne. Anche per le matrici associate valgono le operazioni dell'Algoritmo di Gauss.
+    \begin{example}
+        \[
+            (S)
+            \left\{
+                \begin{matrix}
+                    x_1 & + & 2x_2 & - & 5x_3 & = & 2 \\
+                    2x_1 & - & 3x_2 & + & 4x_3 & = & 4 \\
+                    4x_1 & + & x_2 & - & 6x_3 & = & 8 \\
+                \end{matrix}
+            \right.  
+        \]
+        \[
+          {\rm \!M}(S)
+          \begin{bmatrix}
+            1 & 2 & -5 & -2 \\
+            2 & -3 & 4 & -4 \\
+            4 & 1 & -6 & -8 \\
+          \end{bmatrix}  
+        \]
+        \[
+            {\rm \!M}(S) \left[\frac{Sum(\epsilon_2, -2\epsilon_1)}{Sum(\epsilon_3, -4\epsilon_1)}\right]
+            \begin{bmatrix}
+                1 & 2 & -5 & -2 \\
+                0 & -7 & 14 & 0 \\
+                0 & -7 & 14 & 0 \\
+            \end{bmatrix}
+        \]
+        \[
+            {\rm \!M}(S) \left[Sum(\epsilon_3, -\epsilon_2)\right]
+            \begin{bmatrix}
+                1 & 2 & -5 & -2 \\
+                0 & -7 & 14 & 0 \\
+                0 & 0 & 0 & 0 \\
+            \end{bmatrix}
+        \]
+        \[
+            {\rm \!M}(S) \left[Multiply(-\frac{1}{7}, \epsilon_2)\right]
+            \begin{bmatrix}
+                1 & 2 & -5 & -2 \\
+                0 & 1 & -2 & 0 \\
+                0 & 0 & 0 & 0 \\
+            \end{bmatrix}
+        \]
+        \[
+            {\rm \!M}(S) \left[Sum(\epsilon_1, -2\epsilon_2)\right]
+            \begin{bmatrix}
+                1 & 0 & -1 & -2 \\
+                0 & 1 & -2 & 0 \\
+                0 & 0 & 0 & 0 \\
+            \end{bmatrix}
+        \]
+        \[
+        W = \{\langle x_3(1,2,1) + (2,0,0)\rangle\ |\: x_3\in\R\}    
+        \]
+    \end{example}
+    \newpage
+    \subsection{Prodotto tra matrici e vettori}
+    Il prodotto di una matrice $m_{k,n}$ ed un vettore $v\in\R^n$ è uguale a:
+    \[ m_{k,n}
+        \begin{bmatrix}
+            \alpha_{1,1} & \dots & \alpha_{1,n} \\
+            \dots & \dots & \dots \\
+            \dots & \dots & \dots \\
+            \alpha_{k,1} & \dots & \alpha_{k,n}
+        \end{bmatrix}
+        \times
+        v_{n,1}
+        \begin{bmatrix}
+            x_1 \\
+            x_2 \\
+            \dots \\
+            x_n
+        \end{bmatrix}
+        =
+        v'_{k,1}
+        \begin{bmatrix}
+            \sum_{j=1}^{n} a_{1,j}*x_j \\
+            \sum_{j=1}^{n} a_{2,j}*x_j \\
+            \dots \\
+            \dots \\
+            \sum_{j=1}^n a_{k,j}*x_j
+        \end{bmatrix}    
+    \]
+    \subsection{Matrice di $\alpha$, vettore delle $x$ e vettore dei $\beta$}
+    un sistema (S) può anche essere rappresentato tramite il seguente prodotto:
+    \[(S)\, \alpha_{k,n} \times x_{n,1} = \beta_{k,1}\]
+    dove $\alpha_{k,n}$ è una matrice di coefficenti di k righe e n colonne, $x_{n,1}$ è un vettore di n incognite e $\beta_{n,1}$ è un vettore di n termini noti.
+    \subsection{Trasformazione lineare}
+    Data una matrice $m[m_{i,j}]\in M_{k\times n}$, la trasformazione lineare associata ad $m$ è una funzione:
+    \(A_m: \R^n \rightarrow \R^k\) definita come: \(A_m(v)=a*v\quad \forall v\in {}\rm I\!R^n\).
+    \begin{example}
+        \[
+            m = 
+            \begin{bmatrix}
+                1 & 0 & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1 \\
+            \end{bmatrix}
+            \in M_{3\times 3}(\R)
+            \quad
+            v = 
+            \begin{bmatrix}
+                v_1 \\
+                v_2 \\
+                v_3 \\
+            \end{bmatrix}
+            \in \R^3
+        \]
+        \[
+            A_m(v)=
+            \begin{bmatrix}
+                1 & 0 & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1 \\
+            \end{bmatrix}
+            \times
+            \begin{bmatrix}
+                v_1 \\
+                v_2 \\
+                v_3 \\
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                v_1 \\
+                v_2 \\
+                v_3 \\
+            \end{bmatrix}
+            (Id_\R^3)
+        \]
+    \end{example}
+    \begin{example}
+        \[
+            m' =
+            \begin{bmatrix}
+                \lambda & 0 \\
+                0 & \mu \\
+            \end{bmatrix}
+            \quad
+            v' =
+            \begin{bmatrix}
+                v_1 \\
+                v_2 \\
+            \end{bmatrix}
+        \]
+        Geometricamente:
+        \begin{enumerate}
+            \item Se $\lambda = \mu > 0$ si dice omotetia.
+            \item Se $\lambda = 1\, \mu = -1$ si dice riflessione rispetto all'asse $x$.
+            \item Se $\lambda = -1 \, \mu = 1$ si dice riflessione rispetto all'asse $y$.
+            \item Se $\lambda = \mu = -1$ si dice riflessione rispetto all'origine.
+            \item Se $\lambda = 1 \, \mu = 0$ si dice proiezione ortogonale sull'asse $x$.
+            \item Se $\lambda = 0 \, \mu = 1$ si dice proiezione ortogonale sull'asse $y$.
+            \item Rotazione rispetto all'origine:
+            \[
+                m''=
+                \begin{bmatrix}
+                    \cos\Theta & -\sin\Theta \\
+                    \sin\Theta & \cos\Theta \\
+                \end{bmatrix}
+                \quad
+                v''=
+                \begin{bmatrix}
+                    v_1 \\
+                    v_2 \\
+                \end{bmatrix}     
+            \]
+        \end{enumerate}
+    \end{example}
+    \newpage
+    \subsection{Interpretazione geometrica di $W$}
+    Dato un sistema $(S)_{k,n} = \alpha\times x = \beta$ e la funzione di trasformazione lineare \(A_\alpha : \R^n\rightarrow \R^k\); l'insieme delle soluzioni $W$ del sistema è definito come:
+    \[W = \{v\in \R^k |\, A_\alpha(v) = \beta\}\]
+    \subsection{Propietà delle Trasformazioni lineari}
+    Dati $a = [a_{ij}]\in M_{s\times t}(\R)\quad A_a:\R^t\rightarrow\R^s$ e $v,w\in\R^t$
+    \begin{enumerate}
+        \item $A_a(v+w) = a*(v+w) = \left[\sum_{j=1}^t a_{ij*(v_j+w_j)}\right] = \left[\sum_{j=1}^t a_{ij*(v_j)}\right] + \left[\sum_{j=1}^t a_{ij}*(w_j)\right] = A_a(v) + A_a(w)$
+        \item $\lambda\in\R\quad A_a(\lambda v) = \left[\sum_{j=1}^t a_{ij}*(\lambda v_j)\right] = \lambda\left[\sum_{j=1}^t a_{ij}*(v_j)\right] = \lambda A_a(v)$
+    \end{enumerate}
+    \newpage
+    \subsection{Sistema Omogeneo associato}
+    Il sistema omogeneo associato a $(S)$ è $(S')$ dove $\forall \alpha\in (S) \wedge \alpha' \in (S').\;\alpha' = \alpha$ e $\forall \beta'\in (S').\; \beta' = 0$
+    \begin{theorem}
+        Siano $x,y\in\R^t$ due soluzioni del sistema $(S')$ e $\lambda,\mu\in\R$, allora $\lambda x+\mu y \in W(S')$
+    \end{theorem}
+    \begin{proof}
+        \[A(x) = \langle 0\rangle_s \wedge A(y) = \langle 0 \rangle_s \quad (\langle 0 \rangle_s \text{ Vettore vuoto})\]
+        \[
+            \begin{matrix}
+                A(\lambda x + \mu y) & = & A(\lambda x) + A(\mu y) & (\text{per proprità 1})\\
+                & = & \lambda A(x) + \mu A(y) & (\text{per proprità 2})\\
+                & = & \lambda \langle 0 \rangle_s + \mu \langle 0 \rangle_s & (\text{per ipotesi})\\
+                & = & \langle 0 \rangle_s
+            \end{matrix}
+        \]
+    \end{proof}
+    \begin{lemma}
+        Siano $x,y\in\R^t$ due soluzioni di $(S)$, allora $x-y$ è una soluzione di $(S')$
+    \end{lemma}
+    \begin{proof}
+        \[A(x) = \beta\quad A(y) = \beta\]
+        \[
+            \begin{matrix}
+                A(x-y) & = & A(x + (-1)y) & (\text{per calcolo}) \\
+                & = & A(x) + A(-1y) & (\text{per proprietà 1}) \\
+                & = & \beta - A(y) & (\text{per ipotesi e proprità 2}) \\
+                & = & \beta - \beta & (\text{per ipotesi}) \\
+                & = & \langle 0 \rangle_s
+            \end{matrix}
+        \]
+    \end{proof}
+    \begin{corollary}
+        Sia $\tilde{x}\in\R^t$ una soluzione finita di $(S)$, allora tutte le soluzioni di $(S)$ sono della forma $\tilde{x} + y\; y\in W(S')$
+    \end{corollary}
+    \begin{proof}
+        \[A(\tilde{x}) = \beta\quad A(y) = \langle 0 \rangle\]
+        \[
+            \begin{matrix}
+                A(\tilde{x} + y) & = & A(\tilde{x}) + A(y) & (\text{per proprità 1}) \\
+                & = & \beta + \langle 0 \rangle & (\text{per ipotesi}) \\
+                & = & \beta
+            \end{matrix}
+        \]
+    \end{proof}
+    \newpage
+    \section{Spazio Vettoriale}
+    \begin{definition}
+        Uno Spazio vettoriale reale (su $\R$) è un insieme di vettori avente 2 operazioni:
+        \begin{itemize}
+            \item Addizione $\quad+:V\times V \rightarrow V \quad +(v,w)\mapsto v+w$
+            \item Prodotto Scalare $\quad *: \R\times V \rightarrow V\quad *(\lambda, v)\mapsto \lambda v$
+        \end{itemize}
+        Tali che $\forall u,v,w \in V \wedge \lambda,\mu \in \R$ valgono le seguenti proprietà:
+        \begin{enumerate}
+            \item $u + (v+w) = (u+v)+w$
+            \item $\exists \langle 0 \rangle \in V.\; \langle 0 \rangle + v = v$
+            \item $\forall v\in V.\;\exists w\in V.\; v+w = \langle 0 \rangle\quad (w= -v)$
+            \item $\forall v,w \in V.\; v+w = w+v$
+            \item $\lambda(\mu v)  = \lambda\mu v \quad ((\lambda\mu) \text{ prodotto nei reali, } (\lambda\mu)v \text{ prodotto scalare})$
+            \item $\lambda(v+w)  = \lambda v + \lambda w$
+            \item $(\lambda + \mu)v = \lambda v + \mu v$
+            \item $1*v = v$
+        \end{enumerate}
+    \end{definition}
+    \begin{proposition}
+        Sia V uno spazio vettoriale reale, $\forall v\in V \wedge \lambda \in \R$ valgono:
+        \begin{enumerate}
+            \item $\lambda * \langle 0 \rangle = \langle 0 \rangle$
+            \item $0 * v = \langle 0 \rangle$
+            \item $\lambda * v = 0 \Rightarrow \lambda = 0 \vee v = \langle 0 \rangle$
+            \item $\sum_{i=1}^k \lambda_i v = v\left(\sum_{i=1}^k \lambda_i\right)$
+            \item $\sum_{i=1}^k \lambda v_i = \lambda\left(\sum_{i=0}^k v_i\right)$
+            \item $-\lambda v = \lambda * (-v) = -\lambda v$
+        \end{enumerate}
+    \end{proposition}
+    \begin{definition}
+        Dati due spazi vettoriali reali $V$ e $W$\newline
+        Una trasformazione lineare $A:V\rightarrow W$ tale che:
+        \begin{enumerate}
+            \item $A(x+y) = A(x) + A(y)\quad\forall x,y\in V$
+            \item $A(\lambda x) = \lambda A(x)\quad\forall x\in V \wedge \lambda\in\R$
+        \end{enumerate}
+    \end{definition}
+    \begin{definition}
+        Sia $V$ uno spazio vettoriale reale e $W\subseteq V$, $W$ è un sottospazio di $V$
+    \end{definition}
+    \begin{proposition}
+        Sia $V$ uno spazio vettoriale reale.
+        \[W\subseteq V \text{ è un sottospazio}\Leftrightarrow \forall w_1,w_2\in W \wedge \lambda\in \R .\; w_1+w_2\in W\wedge\lambda w_1 \in W \wedge \langle 0 \rangle \in W\]
+    \end{proposition}
+    \begin{proposition}
+        $V\cap W\quad A:V\rightarrow W$ Se:
+        \begin{itemize}
+            \item $Z\subseteq V\quad A(Z) \subseteq W$ è un sottospazio.
+            \item $Y\subseteq V\quad A^{-1}(Y)\subseteq V$ è un sottospazio.
+        \end{itemize}
+    \end{proposition}
+    \textbf{Osservazione:} L'intersezione di sottospazi è un sottospazio.
+    \begin{definition}
+        Se $W_1 \wedge W_2$ sono sottospazi di $V$, allora $W_1+W_2 = \{w_1 + w_2 |\; w_1\in W_1 \wedge w_2 \in W_2\}$
+        \newline
+        \textbf{Osservazione:} $w_1,w_2 \in W_1+W_2$ 
+    \end{definition}
+    \newpage
+    \begin{definition}
+        Sia $V$ uno spazio vettoriale reale e $v_1,v_2,\dots,v_k\in V \wedge \lambda_1,\lambda_2\dots\lambda_k \in\R$
+        \[v = \lambda_1v_1+\lambda_2v_2+\dots +\lambda_kv_k \text{ è detta combinazione lineare di } v_1,\dots ,v_k\]
+    \end{definition}
+    \begin{definition}
+        Dato $X\subseteq V$ l'insieme:
+        \[\left<X\right> = \{\text{Combinazioni lineari di vettori in x}\}\subseteq V\]
+        $\left<X\right>$ è un sottospazio di $V$ detto generato da $X$.
+    \end{definition}
+    \begin{proposition}
+        Sia $V$ uno spazio vettoriale reale. Sia $X\subseteq V$ un sottoinsieme, allora
+        \[\left<x\right>\text{è un sottospazio generato da } X.\] 
+    \end{proposition}
+    \begin{proof}
+        Siano: 
+        \[v,w\in \left< X\right>.\;\exists v_1,v_2,\dots ,v_k, w_1,w_2,\dots ,w_k\in X \wedge \lambda_1,\lambda_2\dots ,\lambda_k,\mu_1,\mu_2\dots ,\mu_k\in\R .\; v = \left(\sum_{i=1}^k \lambda_i v_i\right) \wedge w = \left(\sum_{i=1}^k \mu_i w_i\right)\]
+        \[1.)\quad v+w = \lambda_1v_1+\lambda_2v_2+\dots +\lambda_kv_k+\mu_1w_1+\mu_2w_2+\dots +\mu_kw_k \in \left<X\right>\]
+        \[2.)\quad\lambda'\in\R. \lambda'v = \lambda'(\lambda_1v_1+\dots + lambda_kv_k)\]
+    \end{proof}
+    \textbf{Osservazione:} $X\subseteq\left< X\right> \quad v\in X,\, 1*v \in \left< X \right>$
+    \begin{definition}
+        Sia $V$ uno spazio vettoriale reale e $X\subseteq V$, $X \text{ Genera } V \Rightarrow \left< X \right> = V$.
+    \end{definition}
+    \begin{example}
+        $V = \R^t,\quad x = \langle e_1,e_2,\dots ,e_t\rangle\;(\text{Base canonica})$
+        \[e_i = \langle 0_1,0_2,\dots ,1_i,\dots,0_t\rangle\]
+        \[
+            \begin{matrix}
+                \left< X \right> & = & \{\lambda_1e_1 +\lambda_2e_2+\dots +\lambda_t,e_t\; |\, \lambda\in\R\} & (Definizione)\\
+                & = & \{(\lambda_1,\lambda_2,\dots ,\lambda_t)\; |\,\lambda\in\R\} & (\text{per calcolo}) \\
+                & = & \R^t \\
+            \end{matrix}
+        \]
+    \end{example}
+    \begin{example}
+        \[(S'): \alpha x = \langle 0 \rangle \quad 
+        \left\{
+            \begin{matrix}
+                x_1 & 0 & 0 & -3x_4 & = & 0 \\
+                0 & x_2 & x_3 & -x_4 & = & 0 \\
+                0 & 0 & 0 & 0 & = & 0 \\
+                0 & 0 & 0 & 0 & = & 0 \\
+            \end{matrix}
+        \right.
+        \]
+        \[
+            \begin{matrix}
+                A^{-1}(0) & = & \{(3x_4,-x_3+x_4,x_3,-x_4)\; |\; x_3,x_4\in\R\} \\
+                & = & \{x_3(0,-1,1,0),x_4(3,1,0,1)\}
+            \end{matrix}
+        \]
+    \end{example}
+    \begin{proposition}
+        Sia $V$ uno spazio vettoriale reale, siano $X,Y\subseteq V$ allora:
+        \begin{enumerate}
+            \item $X \subseteq\CombSet{X}$
+            \item $X\subseteq Y \Rightarrow \CombSet{X}\subseteq \CombSet{Y}$
+            \item $\CombSet{\CombSet{X}}  = \CombSet{X}$
+            \item $X\subseteq W \subseteq V \Rightarrow \CombSet{X}\subseteq W$
+            \item $X\; Genera\;V \wedge X\subseteq Y \Rightarrow Y\; Genera\; V$
+            \item $X\; Genera\; V\wedge x\in X\wedge x\in\CombSet{X-\{x\}}\Rightarrow X-\{x\}\; Genera\; V$
+        \end{enumerate}
+    \end{proposition}
+    \begin{definition}
+        Sia $V$ uno spazio vettoriale e $X\subseteq V$ un sottoinsieme.\newline
+        Diciamo che $X$ è (linearmente) indipendente se:
+        \[
+            \forall v_1,v_2,\dots ,v_k\in X\wedge\lambda_1,\lambda_2,\dots , \lambda_k\in\R .\; \sum_{i=1}^k \lambda_iv_i = 0 \Rightarrow \lambda_1=\lambda_2=\dots = \lambda_k = 0
+        \]
+    \end{definition}
+    \newpage
+    \begin{example}
+        \[V = \R^t,\quad x= (e_1,\dots ,e_t)\]
+        \[
+            \begin{matrix}
+                \text{Siano } \lambda_1,\dots ,\lambda_k\in\R . \sum_{i=1}^t \lambda_ie_i & = & \langle 0 \rangle \\
+                (\lambda_1, \lambda_2, \dots, \lambda_t) & = & \langle 0 \rangle & (\text{per calcolo}) \\
+                \lambda_1 = \lambda_2 = \dots = \lambda_t = 0 \\
+                X \text{è indipendente.}
+            \end{matrix}
+        \]
+    \end{example}
+    \begin{example}
+        \[V = \R^2\quad x = \{(1,1),(1,-1)\}\quad\lambda,\mu\in\R\]
+        \[
+            \begin{matrix}
+                \lambda (1,1)+\mu (1,-1) & = & (0,0) \\
+                (\lambda + \mu, \lambda - \mu) & = & (0,0) \\
+                \lambda = \mu = 0 \\
+                X \text{ è indipendente.}
+            \end{matrix}
+        \]
+    \end{example}
+    \begin{example}
+        \[\tilde{X} = \{(1,1), (1,-1), (3,1)\}\subseteq V = \R^2\]
+        \[2(1,1) + (1,-1) + (-1)(3,1) = (0,0)\]
+        \[\text{Quindi X non è indipendente.}\]
+    \end{example}
+    \begin{example}
+        \[\alpha = (\alpha_{ij})\in M_{s\times t}(\R)\quad A:\R^t\rightarrow\R^s,\quad A(v)  =\alpha*v\]
+        \[Gauss \rightarrow\; v_1,\dots ,v_k\in\R^t\text{ tali che:}\]
+        \[A^{-1}(0) = \{(v_1,\dots ,v_k)\}\]
+        \[
+            (S') 
+            \left[
+                \begin{matrix}
+                    0 & 1 & 0 & 2 & 0 & 3 \\
+                    0 & 0 & 1 & -2 & 0 & 3 \\
+                    0 & 0 & 0 & 0 & 1 & 3 \\
+                    0 & 0 & 0 & 0 & 0 & 0 \\
+                \end{matrix}
+            \right]    
+            \rightarrow
+            \left\{
+                \begin{matrix}
+                    x_2 & = & -2x_4-3x_6 \\
+                    x_3 & = & 2x_4-3x_6 \\
+                    x_5 & = & -3x_6
+                \end{matrix}
+            \right.
+        \]
+        \[
+            \begin{matrix}
+                A^{-1}(0) & = & \{(x_1,-2x_4-3x_6,2x_4-3x_6,x_4,-3x_6,x_6)\}\; |\; x_1,x_4,x_6\in\R \\
+                & = & \{x_1(1,0,0,0,0,0) + x_4(0,-2,2,1,0,0) + x_6(0,-3,3,0,-3,1)\; | \; x_1,x_4,x_6\in\R\}
+            \end{matrix}
+        \]
+    \end{example}
+    \begin{proposition}
+        Sia V uno spazio vettoriale reale. Sia $X\subseteq V$ un sottoinsieme indipendente Se:
+        \begin{enumerate}
+            \item $Y\subseteq X \Rightarrow Y$ è indipendente.
+            \newline\textbf{Osservazione:} $\emptyset$ è indipendente.
+            \item $v\in V-\CombSet{X} \Rightarrow X\cup \{v\}$ è indipendente.
+        \end{enumerate}
+    \end{proposition}
+    \begin{proof}[Proof Punto 2]
+        \[\lambda_1,\lambda_2,\dots ,\lambda_t\in\R\wedge v_1,v_2,\dots ,v_t\in X\wedge \sum_{i=1}^t \lambda_iv_i = 0 \; \] 
+        \[Se\; \lambda = 0, \sum_{i=1}^t \lambda_iv_i = 0, \text{ ma x è indipendente quindi } \lambda_1 = \dots = \lambda_t = 0.\]
+        \[Se\; \lambda\neq 0\; v = -\frac{\lambda_1}{\lambda}v_1-\dots -\frac{\lambda_t}{\lambda}v_t\in\CombSet{X}\perp\]
+        \[\text{Quindi }X\cup\{v\}\text{ è indipendente.}\]
+    \end{proof}
+    \newpage
+    \begin{proposition}
+        Sia $V$ uno spazio vettoriale reale. Sia $X\subseteq V$, allora $P_1$ e $P_2$ sono equivalenti:
+        \begin{itemize}
+            \item [$P_1$] $X$ è un insieme minimale di generatori di $V$, ossia $X$ genera $V$ e $\forall v\in X.\; X-\{v\}$ non genera $V$
+            \item [$P_2$] $X$ è indipendente e massimale, ossia $X$ è indipendente e $\forall v \in V-X.\; X\cup\{v\}$ non è indipendente.
+            \item [$P_3$] $X$ genera $V$ ed è indipendente.
+        \end{itemize}
+    \end{proposition}
+    \begin{definition}
+        Se $X\subseteq V\wedge (P_1(X) \vee P_2(X))$ diciamo che $X$ è una Base di $V$.
+    \end{definition}
+    \begin{theorem}
+        $\newline$
+        Sia $V$ uno spazio vettoriale e sia $X\subseteq V$ indipendente.\newline
+        Sia $Y\subseteq V$ sottoinsieme tale che $X\subseteq Y$ allora $\exists\; Base$ di $\CombSet{Y}$ tale che $X\subseteq B \subseteq Y$
+    \end{theorem}
+    \begin{corollary}
+        Ogni spazio vettoriale reale ha almeno una base.
+    \end{corollary}
+    \begin{proof}
+        \[X=\emptyset,\; Y=V\quad(\text{Si applica il teorema precedente})\]
+    \end{proof}
+    \begin{theorem}
+        $\newline$
+        Tutte le basi di $V$ hanno la stessa cardinalità o meglio tutte le basi di $V$ sono in biiezione.
+    \end{theorem}
+    \begin{definition}
+        La dimensione di $V$ è data da $|B|$ ovvero la cardinalità della base.
+        \begin{example}
+            \[\R^t,\; B_e = (e_1,e_2,\dots ,e_t)\;(\text{base canonica})\]
+            \[Dim_R^t = |B_e| = t\]
+        \end{example}
+    \end{definition}
+    \begin{proposition}
+        $v_1,\dots ,v_t$ sono linearmente indipendenti $\Leftrightarrow \alpha *x=0$ ha la sola soluzione 0 e questo succede $\Leftrightarrow$ 
+        \[
+            \alpha\rightsquigarrow Gauss 
+            \left[
+                \begin{matrix}
+                    1 & 0 & \dots & 0 \\
+                    0 & 1 & \dots & 0 \\
+                    \dots & \dots & \dots & \dots \\
+                    0 & 0 & \dots & 1
+                \end{matrix}
+            \right]
+        \]
+    \end{proposition}
+    \begin{example}
+        \[
+            v_1 = \begin{vect} 1 \\ 2 \\ 3\end{vect}, 
+            v_2 = \begin{vect} 1 \\ 0 \\ 1\end{vect}, 
+            v_3 = \begin{vect} 0 \\ 2 \\ 2\end{vect},
+            v_4 = \begin{vect} 2 \\ 2 \\ 4\end{vect}
+            \in\R^3
+        \]
+        \[
+            \begin{vect}
+                1 & 1 & 0 & 2 \\
+                2 & 0 & 2 & 2 \\
+                3 & 1 & 2 & 4 \\
+            \end{vect}
+        \]
+        \[
+            \rightarrow \left(\frac{Sum(\epsilon_1, -\epsilon_2)}{Sum(\epsilon_3, -3\epsilon_1)}\right)\,
+            \begin{vect}
+                1 & 1 & 0 & 2 \\
+                0 & -2 & 2 & -2 \\
+                0 & -2 & 2 & -2 \\
+            \end{vect}
+        \]
+        \[
+            \rightarrow \left(Multiply(-\frac{1}{2}, \epsilon_2)\right)\,
+            \begin{vect}
+                1 & 1 & 0 & 2 \\
+                0 & 1 & -1 & 1 \\
+                0 & -2 & 2 & -2 \\
+            \end{vect}
+        \]
+        \[
+            \rightarrow \left(\frac{Sum(\epsilon_1, -\epsilon_2)}{Sum(\epsilon_3, 2\epsilon_2)}\right)\,
+            \begin{vect}
+                1 & 0 & 1 & 1 \\
+                0 & 1 & -1 & 1 \\
+                0 & 0 & 0 & 0 \\
+            \end{vect}
+        \]
+        $v_1,v_2$ sono indipendenti mentre $v_3 = v_1-v_2,\; v_4 =v_1+v_2$
+    \end{example}
+    \newpage
+    \begin{proposition}
+        Sia $V$ uno spazio vettoriale reale e sia $W\subseteq V$ un sottospazio  $\Rightarrow Dim_\R(W)\leq Dim_\R(V)$
+    \end{proposition}
+    \begin{proof}
+        Sia $B\subseteq W$ una base di $W \Rightarrow\exists\, \tilde{B}\subseteq V$ base di $V. B\subseteq\tilde{B}$ quindi $Dim_\R(W) = |B| \leq Dim_\R(V) = |\tilde{B}|$
+    \end{proof}
+    \begin{proposition}
+        Sia $V$ uno spazio vettoriale tale che $Dim_\R(V) = d \in N$:
+        \begin{enumerate}
+            \item Se $X\subseteq V$ è indipendente $\Rightarrow |X| \leq d$. E se $|X| = d\Rightarrow X$ è base di $V$.
+            \item Se $X\subseteq V$ genera $V \Rightarrow |X| \geq d$. E se $|X| = d\Rightarrow X$ è una base.
+        \end{enumerate}
+    \end{proposition}
+    \begin{proof}[Proof Punto 1.]
+        Per il Teorema $\exists\, B\subseteq V$ base di $V$ tale che $X\subseteq B\Rightarrow |X| \leq |B| = Dim_\R(V) = d$\newline
+        Se $d = |X| \leq |B| = d \Rightarrow |X| = |B|$
+    \end{proof}
+    \begin{exercise}
+        Se $W\subseteq V$ è un sottospazio e $Dim_\R(W) = Dim_\R(V) = d \in N \Rightarrow W=V$?
+    \end{exercise}
+    \begin{proposition}
+        Sia $V$ \Vspace e sia $E = \{e_1,\dots ,e_i\; | i\in I\}$ una base di $V$. Allora ogni $v\neq 0 \in V$ si scrive in modo unico con una combinazione lineare di elementi distinti di $E$.
+    \end{proposition}
+    \begin{proof}
+        $v\in V =\, <E>,\; v = \lambda_1*e_1 + \lambda_2*e_2 + \dots + \lambda_t*e_t,\; e_i\in E$. Supponiamo che:
+        \[v = \lambda_1*e_1 +\dots +\lambda_t*e_t = \mu_1*e_1 + \dots + \mu_t*e_t\]
+        \[0 = v-v = (\lambda-\mu)_1*e_1 + \dots + (\lambda-\mu)_t*e_t\]
+        \[\text{Siccome E è indipendente allora } \lambda_1 - \mu_1 = 0, \dots, \lambda_t - \mu_t = 0\,  \bot\]
+    \end{proof}
+    \begin{definition}
+        Se fissiamo un ordinamento totale agli elementi in $E$ ottengo delle coordinate: 
+        \[V \ni v = \sum_{i\in I} \lambda_i*e_i \rightsquigarrow (\lambda_i)_{i\in I}\]
+    \end{definition}
+    \begin{theorem}[Formula di Grassman]
+        Siano $W_1, W_2$ due sotto spazi di \Vspace $V$. Allora:
+        \begin{itemize}
+            \item $\Dim{W_1 + W_2}\neq \Dim{W_1} + \Dim{W_2}$
+            \item $\Dim{W_1 + W_2} = \Dim{W_1} + \Dim{W_2} - \Dim{W_1\cap W_2}$
+        \end{itemize}
+    \end{theorem}
+    \begin{proof}
+        Considero che le dimensioni siano finite e considero $B = \{e_1,\dots ,e_r\}$ base di $W_1 \cap W_2$\newline
+        Siccome $B$ è indipendente $B\subseteq W_1,\, \exists\, B_1 = \{e_1,\dots ,e_r,x_1,\dots ,x_s\}$ base di $W_1$ e analagomente\newline
+        $\exists\, B_2 = \{e_1,\dots , e_r, y_1,\dots , y_t\}$ base di $W_2$ allora $B_1 \cup B_2$ è base di $W_1+ W_2$
+        \[|B_1\cup B_2| = |\{e_1,\dots ,e_r,x_1,\dots , x_s, y_1, \dots , t_t\}| = r+s+t = (r+s)+(r+t) - r\]
+        Chiaramente $B_1\cup B_2$ genera $<W_1\cup W_2> = W_1 + W_2$ mostriamo che $B_1\cup B_2$ è indipendente:
+        \[
+            \begin{matrix}
+                \sum_{i=1}^r \lambda_ie_i + \sum_{i=1}^s \alpha_ix_i + \sum_{i=i}^t \beta_iy_i & = & 0 \\
+                \sum_{i=1}^r \lambda_ie_i + \sum_{i=1}^s \alpha_ix_i & = & -\sum_{i=i}^t \beta_iy_i & \in W_1\cap W_2 \\
+            \end{matrix}
+        \]
+        Cioè:
+        \[
+            \begin{matrix}
+                -\sum_{i=1}^t \beta_iy_i & = & \sum_{i=1}^r \mu_ie_i & \text{per qulche} \mu,\dots ,\mu_r \in\R \\
+                \sum_{i=1}^r \mu_ie_i + \sum_{i=1}^t \beta_iy_i & = & 0 & \text{Ma } \beta \text{ è indipendente} \\
+            \end{matrix}
+        \]
+        quindi $\beta_1,\dots , \beta_t = 0$
+    \end{proof}
+    \newpage
+    \begin{example}
+        In $\R^4$ considero $V = \left\{ \text{Soluzioni di } \begin{cases} x_1 + 2x_2 + x_3 = 0 \\ -x_1 -x_2 +3x_4 = 0\end{cases} \right\}$ e $W = \Bigg\langle\left\{ w_1 = \begin{vect} 2 \\ 0 \\ 1 \\ 1\end{vect}, w_2 = \begin{vect} 3 \\ -2 \\ -2 \\ 0\end{vect} \right\}\Bigg\rangle$\newline
+        $\Dim{V\cap W} \wedge \Dim{V + W}$?\newline
+        Per $\Dim{W} = 2$ perché $\forall \lambda \in \R.\, w_1 \neq \lambda w_2$ ($w_2$ non è multiplo di $w_1$)\newline
+        Per $\Dim{V} = 
+        \left[
+            \begin{matrix}
+                1 & 2 & 1 & 0 \\
+                -1 & -1 & 0 & 3
+            \end{matrix}
+        \right]
+        \rightarrow
+        \left[
+            \begin{matrix}
+                1 & 2 & 1 & 0 \\
+                0 & 1 & 1 & 3
+            \end{matrix}
+        \right]
+        \rightarrow
+        \begin{bmatrix}
+            1 & 0 & -1 & -6 \\
+            0 & 1 & 1 & 3 
+        \end{bmatrix}
+        \Dim{V} = 2$
+        \[V = \{x_3(1,-1,1,0) + x_4(6,-3,0,1)\} = \Bigg\langle\left\{ v_1 = \begin{vect}1 \\ -1 \\ 1 \\ 0\end{vect}, v_2 = \begin{vect}6 \\ -3 \\ 0 \\ 1\end{vect} \right\}\Bigg\rangle\]
+        Per $
+        V + W = \Bigg\langle\left\{ 
+            \begin{vect} 1 \\ -1 \\ 1 \\ 0 \end{vect},
+            \begin{vect} 6 \\ -3 \\ 0 \\ 1 \end{vect},
+            \begin{vect} 2 \\ 0 \\ 1 \\ 1 \end{vect},
+            \begin{vect} 3 \\ -2 \\ -2 \\ 0 \end{vect}
+         \right\}\Bigg\rangle
+         \rightarrow 
+         \begin{bmatrix}
+             1 & 6 & 2 & 3 \\
+             -1 & -3 & 0 & -2 \\
+             1 & 0 & 1 & -2 \\
+             0 & 1 & 1 & 0
+         \end{bmatrix}
+         \rightarrow^*
+         \begin{bmatrix}
+             1 & 0 & 0 & x \\
+             0 & 1 & 0 & x \\
+             0 & 0 & 1 & x \\
+             0 & 0 & 0 & 0
+         \end{bmatrix}
+         \Dim{V+W} = 3
+         $\newline
+         Per Grassmant $\Dim{W\cap V} = -\Dim{V+W} + \Dim{V} + \Dim{W} = -3 + 2 + 2 = 1$
+    \end{example}
+    \begin{lemma}
+        Siano $V,\, W$ 2 spazi vettoriali reali. Sia $V$ finito ($\Dim{V} = d \in N$).\newline
+        Sia $\func{A}{V}{W}$ una Trasformazione lineare.
+        \begin{itemize}
+            \item $Imm(A)\coloneqq A(V)\subseteq W$ (Immagine)
+            \item $Kern(A)\coloneqq A^{-1}(0) \subseteq V$ (Kernel)
+        \end{itemize}
+    \end{lemma}
+    \begin{observation}
+        $Imm(A)$ è un sottospazio di $W$ e $Kern(A)$ è un sottospazio di $V$.
+    \end{observation}
+    \begin{theorem}
+        \[\Dim{V} = \Dim{Imm(A)} + \Dim{Kern(A)}\]
+    \end{theorem}
+    \begin{proof}
+        Sia $B = \{e_1,\dots ,e_n\}$ base di $V$. Allora $X = \{A(e_1),\dots , A(e_n)\}$ genera $Imm(A).$\newline
+        $\, (w\in Imm(A), v\in V.\, A(v) = w)$\newline
+        $v = \lambda_1e_1 + \dots + \lambda_ne_n \Rightarrow w = A(v) = A(\sum_{i=1}^n) \lambda_ie_i = \sum_{i=1}^n\lambda_iA(e_i) \in\, <X>$\newline
+        In particolare $\Dim{Imm(A)}\leq \Dim{V}<+\infty$.\newline
+        Sia $\{w_1,\dots ,w_r\}$ base di $Imm(A)$ e siano $v_1, \dots v_r \in V.\, A(v_i) = w_i$.\newline
+        Sia $E = \{u_1,\dots ,u_s\}\leq V$ una base di $Kern(A)$ (Se $\{u_1,\dots , u_s, v_1,\dots ,v_r\}$ è una base di $V$ ho finito)\newline
+        $v\in V,\, A(V) = \sum_{i=1}^r \lambda_iw_i = \sum_{i=1}^r\lambda_iA(v_i) = A(\sum_{i=1}^r \lambda_iv_i)$
+        \[
+            \begin{matrix}
+                A(v) - A(\sum_{i=1}^r\lambda_iv_i) & = & 0 \\
+                & = & A(v - \sum\lambda_iv_i) & \in Kern(A)\\
+                & = & \sum_{i=1}^s \mu_iu_i \\
+                v & = & \sum_{i=1}^r \lambda_iv_i + \sum_{i=1}^s \mu_iu_i
+            \end{matrix}
+        \]
+        quindi $V = <E>$\newline
+        Siano $\lambda_1,\dots ,\lambda_r, \mu_1,\dots , \mu_s$ t.c. $\sum_{i=1}^r\lambda_iv_i + \sum_{i=1}^s\mu_iu_i = 0$
+        \[
+            \begin{matrix}
+                0=A(0) & = & A(\sum_{i=1}^r\lambda_iv_i + \sum_{i=1}^s\mu_iu_i) \\
+                & = & \sum_{i=1}^r\lambda_iA(v_i) + \sum_{i=1}^s\mu_iA(u_i) & \text{A($u_i$) è sempre 0} \\
+                & = & \sum_{i=1}^r \lambda_iw_i
+            \end{matrix}
+        \]
+        Ma $\{w_1,\dots ,w_r\}$ è indipendente quindi $\lambda_I = 0$
+    \end{proof}
+    \newpage
+    \begin{example}
+        $\alpha = [\alpha_{ij}]\in M_{s\times t}(\R),\; \func{A}{\R^t}{\R^s},\; A(v) = \alpha * v\; \forall\, v\in \R^t$\newline
+        $Kern(A) = A^{-1} = \{\text{Soluzioni di } \alpha * x = 0\} \rightsquigarrow^{Gauss} \{v_1,\dots , v_k\}$
+        \[
+            \begin{matrix}
+                k & = & \Dim{Kern(A)} & (\#\text{ variabili libere}) \\
+                & = & \Dim{R^t} - \Dim{Imm(A)} \\
+                & = & t - \Dim{(Imm(A))} \\
+                & = & t - \#\text{ variabili libere} \\
+                & = & \# \text{ pivot}
+            \end{matrix}
+        \]
+        $Imm(A) = \langle\{ A(e_1),\dots , A(e_t)\}\rangle$ 
+        \[
+            A(e_i) = \alpha * e_i = 
+            \begin{bmatrix}
+                a_{11} & \dots & a_{1t} \\
+                \dots & \dots & \dots \\
+                \dots & \dots & \dots \\
+                \dots & \dots & \dots \\
+                a_{s1} & \dots & a_{st} \\
+            \end{bmatrix}
+            *
+            \begin{bmatrix}
+                0 \\ \dots \\ 1 \\ \dots \\ 0
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                \alpha_{1i} \\ \dots \\ \dots \\ \dots \\ \alpha_{si}
+            \end{bmatrix}
+            (\text{colonna i})
+        \]
+    \end{example}
+    \begin{observation}
+        Se $V,\, W$ sono spazi vettoriali reali, $\func{A}{V}{W}$ è lineare ed $E$ è base di $V$, allora $A(E)$ determina $A$:
+        \[v\in V\; v = \sum \lambda_ie_i\Rightarrow A(v) = A(\sum\lambda_ie_i) = \sum \lambda_i\color{red}A(e_i)\]
+    \end{observation}
+    \begin{observation}
+        Siano $V,\, W$ sono spazi vettoriali reali e sia $E$ base di $V$, sia $\func{f}{E}{W}$ una funzione.\newline
+        Definisco $\func{A_f}{V}{W}$ dato $v\in V\; v = \sum \lambda_ie_i\quad A_f(v) = \sum \lambda_i f(e_i)$\newline
+        Siccome $E$ è una base, $A_f$ è una funzione:
+        \[
+            v_1,v_2 \in V\; v_1 = \sum \lambda_ie_i\; v_2 = \sum \mu_ie_i
+        \]
+        \[
+            \begin{matrix}
+                A_f(v_1 + v_2) & = & A_f(\sum(\lambda_i \mu_i)e_i)\\
+                & = & \sum (\lambda_i \mu_i)f(e_i) \\
+                & = & \sum \lambda_if(e_i) + \mu_if(e_i) \\
+                & = & A_f(v_1) + A_f(v_2) & \square
+            \end{matrix}
+        \]
+    \end{observation}
+    \begin{observation}
+        Siano $V,\, W$ spazi vettoriali reali e $\func{A}{V}{W}$ una trasformazione lineare e biiunivoca, allora $\func{A^{-1}}{W}{V}$ è una trasformazione lineare.
+        \[w_1,\, w_2 \in W\quad A^{-1}(w_1 + w_2) = A^{-1}(w_1) + A^{-1}(w_2)\]
+        \[
+            \begin{matrix}
+                A(A^{-1}(w_1 + w_2)) & = & w_1 + w_2 \\
+                & = & A(A^{-1}(w_1) + A^{-1}(w_2)) \\
+                & = & A(A^{-1}(w_1)) + A(A^{-1}(w_2)) \\
+                & = & A^{-1}(w_1) + A^{-1}(w_2) & \text{ (A è iniettiva)}\;\square
+            \end{matrix}
+        \]
+    \end{observation}
+    \begin{observation}
+        Siano $V,\, W$ spazi vettoriali reali e $\func{A}{V}{W}$ lineare, $E$ base canonica di $V$ e $E^1$ base canonica di $W$.
+        \[A\vdash E \rightarrow E^1 \wedge A^{-1}\vdash E^1 \rightarrow E \Rightarrow \text{ A è biiunivoca}\]
+    \end{observation}
+    \newpage
+    \section{Isomorfismo lineare}
+    \begin{definition}
+        Una trasformazione lineare $\func{A}{V}{W}$ biiunivoca (o bigettiva) è detto isomorfismo lineare.
+    \end{definition}
+    \begin{observation}
+        Un isomorfismo $\func{A}{V}{W}$ manda basi di $V$ in basi di $W$.
+    \end{observation}
+    \begin{proposition}
+        Sia $V$ \Vspace con dimensione $d\in N$, allora $V$ è isomorfo a $\R^d$
+    \end{proposition}
+    \begin{proof}
+        Sia $E = \{e_1,\dots , e_d\}$ base di $V$ e $B(v)$ una funzione che mappa i vettori in $V$ alle coordinate in $\R^d$
+        \[v\in V, \, v = \sum_{i = 1}^{d} \lambda_ie_i\quad B(v)\coloneqq (\lambda_1, \lambda_2,\dots \lambda_d) \in \R^d\; \func{B}{V}{\R^d}\]
+    \end{proof}
+    \begin{observation}
+        Sia $\func{A}{V}{W}$ una trasformazione lineare.
+        \[\text{A è iniettiva }\Leftrightarrow Kern(A) = \{0\}\]
+        \begin{itemize}
+            \item Se $A$ è iniettiva $\Rightarrow v \neq 0\; A(v)\neq A(0)$ quindi $v\notin Kern(A)$, quindi $Kern(A) = \{0\}$.
+            \item Se $A$ non è iniettiva $\Rightarrow \exists\, v,w\in V.\, v\neq w \wedge A(v) = A(w)\; 0 = A(v)-A(w) = A(v-w) \Rightarrow 0\neq v-w \in Kern(A)$.
+        \end{itemize}
+    \end{observation}
+    \begin{observation}
+        Sia $\func{A}{V}{W}$ \Ltrans e sia $\Dim{W}\in N$.
+        \[\text{A è iniettiva} \Leftrightarrow \Dim{Imm(A)} = \Dim{W}\]
+        \begin{itemize}
+            \item Se $A$ è surgettiva $\Rightarrow Imm(A) = W$
+            \item Se $A$ non è surgettiva $\Rightarrow \Dim{Imm(A)} < \Dim{W}$
+        \end{itemize}
+    \end{observation}
+    \begin{corollary}
+        Siano $V,\, W$ spazi vettoriali reali con $\Dim{V) = \Dim{W} = d \in N}$ allora:
+        \begin{enumerate}
+            \item $A$ è iniettiva $\Leftrightarrow \Dim{Kern(A) = 0}$
+            \item $A$ è surgettiva $\Leftrightarrow \Dim{Imm(A) = d}$
+            \item $A$ è biiunivoca $\Leftrightarrow$ è sia iniettiva sia surgettiva
+        \end{enumerate}
+    \end{corollary}
+    \begin{proof}[Proof 3.]
+        \[
+            \begin{matrix}
+                \Dim{V} & = & \Dim{Imm(A)} + \Dim{Kern(A)} \\
+                & = & 0 + d \\
+                & = & d
+            \end{matrix}
+        \]
+    \end{proof}
+    \begin{proposition}
+        Siano $V,\, W$ spazi vettoriali reali. Sia $E$ una base di $V$, $F$ una base di $W$ e sia $\func{A}{V}{W}$
+        \[A(e_j) = \sum_{i=1}^s A_if_i \text{ per j = \{1,\,$\dots$,\, t\}}\]
+        \[m_{F,E}(A) = [A_{ij}]\in M_{s\times t}(\R) \text{ "matrice di A nelle basi ordinate E, F"}\]
+    \end{proposition}
+\end{document}
